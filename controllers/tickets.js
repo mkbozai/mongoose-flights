@@ -8,15 +8,13 @@ module.exports = {
 
 
 function create(req, res) {
-    const flightId = req.params.id
-    const ticket = new Ticket(req.body);
-    ticket.flight = flightId;
-    ticket.save(function(err) {
-        if (err) res.redirect(`/flights/${flightId}/tickets/new`)
+    req.body.flight = req.params.id
+    Ticket.create(req.body, function(err, ticket) {
+        res.redirect(`/flights/${req.params.id}`)
     });
-    res.redirect(`/flights/${flightId}`)
 };
     
 function newTicket(req, res) {
-    res.render('tickets/new', { flightId: req.params.id })
+    let flightId = req.params.id;
+    res.render('tickets/new', { flightId })
 };
